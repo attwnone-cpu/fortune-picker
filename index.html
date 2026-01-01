@@ -1,77 +1,20 @@
-<div style="font-family: sans-serif; text-align: center; padding: 20px;">
-  <h2>🎵 박화애(attwn park) 오리지널 곡 운세 뽑기</h2>
-  <button onclick="pickFortune()" style="font-size:16px; padding:10px 20px; cursor:pointer;">
-    운세 뽑기
-  </button>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>새해 운세 뽑기</title>
+</head>
+<body>
 
-  <div id="result" style="margin-top:30px; line-height:1.6;"></div>
-</div>
+  <h2>🎵 새해 운세 뽑기</h2>
+  <button onclick="pickFortune()">운세 뽑기</button>
+  <div id="result"></div>
 
-<script>
-const songs = [
-  {title:"REHI(리하이)", msg:"새로운 출발을 할 수 있어서 좋아요. 최근 들어 연락이 뜸해진 소중한 사람에게 오랜만에 연락해보는 건 어떨까요?", link:"https://youtu.be/_P7W_rBcChU"},
-  {title:"설탕맛 안녕일기", msg:"좋아하는 사람에게 힘이 되어줄 수 있어요. 일기를 꾸준히 쓰면 좋아요.", link:"https://youtu.be/nnGe6KykYSE"},
-  {title:"CUL(씨유엘)", msg:"당신을 정말로 소중하게 생각하는 사람이 있다는 것을 항상 기억하세요. 일기예보를 확실히 체크하면 좋아요.", link:"https://youtu.be/uB5iWKFOuwc"},
-  {title:"학생A의 유감", msg:"특별해지려고 의식하지 않아도 잘 풀릴 거예요. 평소와 같은 노력이 빛을 발해요.", link:"https://youtu.be/NjRAL6EDiOk"},
-  {title:"별꽃놀이", msg:"간절히 바라는 것이 이루어져요. 반짝이는 물건이 행운의 아이템이에요.", link:"https://youtu.be/yZSyo1I-law"},
-  {title:"삐삐삐삐삐", msg:"기다림에 응답이 돌아와요. 곧이어 피버 타임이 올지 모르니 에너지를 아껴둬요.", link:"https://youtu.be/wGbc0iJJaSs"},
-  {title:"CAFFEINISM(카페이니즘)", msg:"하고 싶은 말을 솔직히 전하는 용기가 성공으로 이어져요. 다 좋지만 카페인 과복용만은 조금 주의하세요.", link:"https://youtu.be/NjzPn-3yBEs"},
-  {title:"샤덴프로이데", msg:"재미난 일이 잔뜩 생길 거예요. 자세히 알지 못하는 소문을 옮길 때에는 주의하세요.", link:"https://youtu.be/sVmxlGuyJeA"},
-  {title:"너의 아무것도 아닌 사람이.", msg:"당신은 당신이 생각하는 것보다 좋은 사람이라는 걸 기억해주세요. 라디오 방송을 들으면 좋아요.", link:"https://youtu.be/ZPZsNG47sbs"},
-  {title:"사이사이사이다", msg:"일상에 딱 좋은 자극이 되어줄 시원함과 상쾌함이 깃들어요. 수분 보급을 유의해요.", link:"https://youtu.be/knGdbrsd3-g"},
-  {title:"마음껏 기력 없고 싶을 때 듣는 노래", msg:"지칠 때는 잠깐 느긋하게 쉬어가도 괜찮아요. 지금 안고 계신 고민은 반드시 해결될 거예요.", link:"https://youtu.be/0SG0bhgjlk8"},
-  {title:"정말 싫어하는 너에게.", msg:"스스로도 모르고 있었던 자신의 본심을 마주하게 돼요. 그 자체는 나쁜 것이 아니니 너무 무서워하지 않아도 괜찮아요.", link:"https://youtu.be/k_QewnaFYJ0"},
-  {title:"피냐타와 나", msg:"매우 격동적인 변화를 맞이하게 돼요. 조금만 용기를 내면 훨씬 더 나은 사람이 될 수 있어요.", link:"https://youtu.be/cqL9Fkj1QEo"},
-  {title:"밤이 되었다", msg:"뻔뻔하게 굴 배짱이 있다면 게임에서 승리해요. 잠은 제대로 자는 것이 좋아요.", link:"https://youtu.be/qHbbIZ1Rrug"},
-  {title:"하바리움", msg:"착각하지 않도록 조심해요. 잘 사용하지 않지만 버리지 못하고 있던 물건을 과감히 정리하면 행운이 찾아와요.", link:"https://youtu.be/NNXqhn76G68"},
-  {title:"나에게 악기는 없지만", msg:"조금 부족하게 느껴지는 정도가 사실은 딱 적당해요. 임기응변이 빛을 발해요.", link:"https://youtu.be/9Xdy8a9RIck"},
-  {title:"마임", msg:"관계 개선을 위해 적극적인 대화가 필요해요. 너무 비관하지 않아도 괜찮아요.", link:"https://youtu.be/InNy0eZKCeU"},
-  {title:"판타스마고리아", msg:"적절한 타이밍을 알고 행동할 필요가 있어요. 극장에 직접 가서 영화나 공연 등을 감상하면 좋아요.", link:"https://youtu.be/HAEF8TlCub8"},
-  {title:"일반인A", msg:"대체 가능하다는 것이 꼭 나쁜 것만은 아니에요. 좋은 성적을 거둘 수 있어요.", link:null},
-  {title:"같지 않아", msg:"좋은 의미로 예상을 벗어나는 일이 생겨요. 그냥 흐름을 타면 될 거예요.", link:"https://youtu.be/WRHEO8Ad7aU"},
-  {title:"qw00wPQ3sNY(할로윈 노래)", msg:"어떤 순간에도 자신이 누구인지 잊지 마세요. 식후에는 가볍게 걷기 운동을 하면 좋아요.", link:"https://youtu.be/qw00wPQ3sNY"},
-  {title:"EgFXYuWuYzE(크리스마스 노래)", msg:"당시에는 실패했다고 생각했던 경험도 나중에 돌아보면 좋은 추억이 돼요. 가능한 만큼의 많은 행복과 운이 당신의 앞날에 넘치게 깃들기를.", link:"https://youtu.be/EgFXYuWuYzE"},
-  {title:"100", msg:"필요 이상으로 깊게 생각하는 것이 권태감의 원인이에요. 분실물은 잊고 지내면 다시 찾게 될 거예요.", link:"https://youtu.be/LVxPPQlj6MM"},
-  {title:"가장 머나먼 행성으로", msg:"타인의 도움을 기다리기 보다는 본인이 우선 행동하는 것이 필요해요. 가끔은 먼 곳으로 여행을 가보는 것도 좋아요.", link:"https://youtu.be/kkC6kqgOZ3o"},
-  {title:"웃으며 이야기를,", msg:"이미 가지고 있는 것의 소중함을 새삼 깨달아요. 가끔은 어리광을 부려도 괜찮아요.", link:"https://youtu.be/Ri3Z7eDodb8"},
-  {title:"スナーク(스나크)", msg:"알다시피, 그 스나크는 부점이었으니까.", link:null},
-  {title:"파랑이 되어버려", msg:"청춘을 경험해요. 행운의 아이템은 파란색 물건이에요.", link:"https://youtu.be/rhrIyzTuXwA"},
-  {title:"방학에 뭐 해 특별히 계획 없으면 나한테 시간 좀 내주지 않을래", msg:"먼저 권유해보는 것도 좋아요. 소중한 추억이 생길 거예요.", link:"https://youtu.be/3Dzc8mOZz5A"},
-  {title:"축제의 날", msg:"당신을 억압하고 있던 문제로부터 자유를 찾게 돼요. 초대받은 자리에 나아갈 때는 입장권이나 신분증을 잊지 않도록 주의해요.", link:"https://youtu.be/qf4rAkRVY3U"},
-  {title:"모두가 나를 싫어해", msg:"지나친 자책은 독이 돼요. 주변 환경에 간단한 변화를 주면 분위기가 환기돼요.", link:"https://youtu.be/m1A-S-PzU6E"},
-  {title:"다시 봄", msg:"설레는 만남을 경험해요. 의외의 모습을 보여주는 것이 어필 포인트가 되어줄 거예요.", link:"https://youtu.be/UCNyQftzArw"},
-  {title:"아무것도 아닌 날", msg:"무소식이 희소식이라고도 하죠. 가끔은 일상을 만끽해봐요.", link:"https://youtu.be/8az6gcfKhKU"},
-  {title:"마이 데이지 벨", msg:"마음 가는 대로 행동해요. 조금 헤매는 것조차 경험이 될 거예요.", link:"https://youtu.be/u_y_wc-Rw7Q"},
-  {title:"레베리", msg:"포기하지 않으면 반드시 이루어져요. 천체 관측을 취미로 삼는 것도 좋을지 몰라요.", link:"https://youtu.be/d262WPaZH9A"},
-  {title:"선풍기 때문이네", msg:"책임 소재는 분명히 하는 것이 좋아요. 전자제품 수명 관리에 주의하세요.", link:"https://youtu.be/9zp-uTZCr1c"},
-  {title:"Merry Happy Khylin Day", msg:"변화를 두려워하지 않으면 새로운 즐거움을 찾을 수 있어요. 비눗방울 놀이로 동심을 떠올려 보는 것은 어떨까요?", link:"https://youtu.be/loZcLtRup8s"},
-  {title:"짙푸른 꽃", msg:"소중한 상대일 수록 적절한 거리감을 지킬 수 있도록 조심하세요. 선물은 꽃이 좋겠어요.", link:"https://youtu.be/Mbi5akdM4YU"},
-  {title:"운디네", msg:"우유부단한 태도가 화를 불러요. 채식주의자가 아니라면 가끔은 고기보다는 생선 요리를 먹어줄 필요가 있겠어요.", link:"https://youtu.be/U8rq-WAYaI4"},
-  {title:"압생트", msg:"다른 사람과 비교하지 말고 본인 스스로에게 집중하는 시간이 필요해요. 중독에 주의.", link:"https://youtu.be/fUi1QGJqKy0"},
-  {title:"피크 담", msg:"주어진 기회를 어떻게 활용하는가는 본인의 재량에 달렸어요. 중독에 주의.", link:"https://youtu.be/7WZFChmyTjM"},
-  {title:"기회주의자", msg:"당장의 성과가 없다고 해서 잘못된 것은 아니에요. 적독이나 저장 강박에 주의.", link:"https://youtu.be/qqPfmp0_K80"},
-  {title:"トーテンタンツ(토텐탄츠)", msg:"나쁜 길로의 유혹에 대해 주의. 사람이 많이 참가하는 행사에 개운의 조짐이 보여요.", link:"https://youtu.be/1cW5AZRcmYU"},
-  {title:"뉴 빌런", msg:"인생을 바칠 수 있을 만큼 좋아하는 것을 만날 수 있어요. 옷매무새를 신경씁시다.", link:"https://youtu.be/OSBWTsTHcJA"},
-  {title:"퍼레이드", msg:"헤어지는 일이 아쉽다면 다시 만날 수 있어요. 폐장 시간까지 남아 있으면 좋은 발견이 있을지도 몰라요.", link:"https://youtu.be/_WEiSOW3hUc"},
-  {title:"팬터마임", msg:"스스로의 의외의 일면을 발견하게 돼요. 행운의 아이템은 거울.", link:"https://youtu.be/pqylCBj54i0"},
-  {title:"고양이가 되고 싶어", msg:"가끔 정도는 제멋대로 굴어도 괜찮아요. 쉴 때는 귀여운 고양이 영상을 보면 좋아요.", link:"https://youtube.com/shorts/lplkCZMQEXU"},
-  {title:"슈탈바움", msg:"가끔은 동심으로 돌아가봐도 좋아요. 알러지가 없다면 견과류 간식도 좋아요.", link:"https://youtu.be/rb7FE9G00T0"},
-  {title:"사이파이", msg:"오랜 상상이 실현되는 모습을 보게 돼요. SF 장르에서 인생 작품을 만날지도 몰라요.", link:"https://youtu.be/j_FAqmpZ85E"},
-  {title:"축제일 밤의 꿈", msg:"이별처럼 보이던 사건이 새로운 출발로 이어져요. 행운의 장소는 도서관.", link:"https://youtu.be/vMib0TtFa04"}
-];
-
-function pickFortune() {
-  const r = Math.floor(Math.random() * songs.length);
-  const s = songs[r];
-
-  document.getElementById("result").innerHTML = `
-    <h3>🎶 ${s.title}</h3>
-    <p>${s.msg}</p>
-    ${
-      s.link
-        ? `<p><a href="${s.link}" target="_blank">▶ 곡 들으러 가기</a></p>`
-        : `<p style="color:#888;">아직 온라인 발매 되지 않은 곡입니다 (260101)</p>`
+  <script>
+    function pickFortune() {
+      document.getElementById("result").innerText = "테스트 메시지입니다";
     }
-  `;
-}
-</script>
+  </script>
+
+</body>
+</html>
